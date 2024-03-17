@@ -5,11 +5,11 @@ from easygoogletranslate import EasyGoogleTranslate
 from colorama import Fore, Style, init
 import pyperclip
 import os
-# Initialize colorama
+
 init()
 os.system('cls')
 os.system("title Roblox Speech to Translated Text")
-# Print ASCII art in purple
+
 print(Fore.MAGENTA + r"""
 __________ ________ __________.____    ________  ____  ___                                            
 \______   \\_____  \\______   \    |   \_____  \ \   \/  /                                            
@@ -33,7 +33,7 @@ _____________________    _____    _______    _________.____       ______________
 --------------------------------------------------------------------------------------------------------
 """ + Style.RESET_ALL)
 
-# Dictionary mapping language names to ISO-639 codes
+
 language_codes = {
     "afrikaans": "af",
     "albanian": "sq",
@@ -186,38 +186,35 @@ def get_target_language():
             print(Fore.RED + "Language not found. Please enter a valid language name." + Style.RESET_ALL)
 
 def listen_and_translate(target_language):
-    # obtain audio from the microphone
+
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print(Fore.WHITE + "Listening..." + Style.RESET_ALL)
         audio = recognizer.listen(source)
 
     try:
-        # recognize speech using Google Speech Recognition
+        
         input_text = recognizer.recognize_google(audio)
         print(Fore.YELLOW + "You said: " + input_text + Style.RESET_ALL)
         translated_text = translate_text(input_text, target_language)
         print(Fore.GREEN + "Translated text: " + translated_text + Style.RESET_ALL)
         
         
-        pyperclip.copy(translated_text)
+        pyperclip.copy(translated_text) #this is so that pyautogui can type it, because it doesn't recognize some of the characters from other languages.
         pyautogui.keyDown('/')
-        pyautogui.keyUp('/')
-        time.sleep(0.5)  # wait for the typing area to activate
+        pyautogui.keyUp('/') ########## For making use with other platforms, this can be removed, this is only here so it starts typing in roblox. ##########
+        time.sleep(0.5)  
         pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)  # wait for the text to be typed
+        time.sleep(0.5)  
         pyautogui.press('enter')
     except sr.UnknownValueError:
         print(Fore.WHITE + "Background noise..." + Style.RESET_ALL)
     except sr.RequestError as e:
         print(Fore.RED + f"Could not request results from Google Speech Recognition service; {e}" + Style.RESET_ALL)
 
-# Get target language from user input
+
 target_language_name, target_language_iso_code = get_target_language()
 
-# continuously listen to the microphone and translate the speech
+
 while True:
     listen_and_translate(target_language_iso_code)
-
-# Keep the command prompt open until user input
-input("Press Enter to exit...")
