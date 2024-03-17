@@ -1,3 +1,7 @@
+THIS WAS MADE AND DESIGNED FOR USE WITH ROBLOX, IF YOU WOULD LIKE TO USE THIS WITH OTHER PROGRAMS, EITHER EDIT THE PYTHON FILE OR CONTACT ME @ theboety ON DISCORD.
+
+
+
 Ok so yeah basic speech to translated text, made to be used in roblox. You enter a language, then speak in english and it will auto-translate, and paste it in chat for you. No api keys, no nothing.
 
 HOW TO INSTALL REQUIREMENTS: First, open cmd prompt in the proper location. alt text type "cmd" in here. alt text then once the cmd prompt opens up send this:
