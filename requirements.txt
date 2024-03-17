@@ -1,0 +1,5 @@
+easygoogletranslate==1.0.3
+pyperclip==1.8.2
+speechrecognition==3.8.1
+pyautogui==0.9.53
+colorama==0.4.4
