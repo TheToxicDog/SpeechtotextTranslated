@@ -5,6 +5,7 @@ from easygoogletranslate import EasyGoogleTranslate
 from colorama import Fore, Style, init
 import pyperclip
 import os
+import keyboard 
 
 init()
 os.system('cls')
@@ -32,7 +33,6 @@ _____________________    _____    _______    _________.____       ______________
                              By: theboety & paradiseeffect
 --------------------------------------------------------------------------------------------------------
 """ + Style.RESET_ALL)
-
 
 language_codes = {
     "afrikaans": "af",
@@ -177,7 +177,7 @@ def translate_text(input_text, target_language):
 
 def get_target_language():
     while True:
-        target_language_input = input("Enter the name of the target language: ").lower()  # Convert input to lowercase
+        target_language_input = input("Enter the name of the target language: ").lower()  
         if target_language_input in language_codes:
             language_name = target_language_input
             iso_code = language_codes[target_language_input]
@@ -186,35 +186,39 @@ def get_target_language():
             print(Fore.RED + "Language not found. Please enter a valid language name." + Style.RESET_ALL)
 
 def listen_and_translate(target_language):
-
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
+        print(Fore.WHITE + "Hold down the 'ALT' key and start speaking..." + Style.RESET_ALL)
+        while not keyboard.is_pressed('alt'):  
+            pass
+
         print(Fore.WHITE + "Listening..." + Style.RESET_ALL)
-        audio = recognizer.listen(source)
+        while True:
+            audio = recognizer.listen(source)
+            if not keyboard.is_pressed('alt'):  
+                break
+
+        print(Fore.WHITE + "Processing..." + Style.RESET_ALL)
 
     try:
-        
         input_text = recognizer.recognize_google(audio)
         print(Fore.YELLOW + "You said: " + input_text + Style.RESET_ALL)
         translated_text = translate_text(input_text, target_language)
         print(Fore.GREEN + "Translated text: " + translated_text + Style.RESET_ALL)
         
-        
-        pyperclip.copy(translated_text) #this is so that pyautogui can type it, because it doesn't recognize some of the characters from other languages.
+        pyperclip.copy(translated_text)  # Copy the translated text to clipboard, this is needed for pyautogui to send.
         pyautogui.keyDown('/')
-        pyautogui.keyUp('/') ########## For making use with other platforms, this can be removed, this is only here so it starts typing in roblox. ##########
+        pyautogui.keyUp('/') #this is so it send into roblox properly.
         time.sleep(0.5)  
-        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.hotkey('ctrl', 'v') 
         time.sleep(0.5)  
-        pyautogui.press('enter')
+        pyautogui.press('enter') 
     except sr.UnknownValueError:
-        print(Fore.WHITE + "Background noise..." + Style.RESET_ALL)
+        print(Fore.RED + "No words detected!" + Style.RESET_ALL)
     except sr.RequestError as e:
         print(Fore.RED + f"Could not request results from Google Speech Recognition service; {e}" + Style.RESET_ALL)
 
-
 target_language_name, target_language_iso_code = get_target_language()
-
 
 while True:
     listen_and_translate(target_language_iso_code)
